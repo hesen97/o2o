@@ -1,5 +1,6 @@
 package com.hesen.o2o.entity;
 
+
 import java.util.Date;
 
 public class Area {
@@ -9,7 +10,7 @@ public class Area {
     private String areaName;
     //权重
     private Integer priority;
-    //创建时间
+    //创建时间(注意date的类型时java.util.date而不是java.sql.date)
     private Date createTime;
     //最后修改时间
     private Date lastEditTime;
