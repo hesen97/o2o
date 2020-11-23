@@ -4,7 +4,7 @@ package com.hesen.o2o.entity;
 import java.util.Date;
 
 public class PersonInfo {
-    private Integer userId;
+    private Long userId;
     private String name;
     private String profileImg;
     private String email;
@@ -15,11 +15,11 @@ public class PersonInfo {
     private Date createTime;
     private Date lastEditTime;
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 
