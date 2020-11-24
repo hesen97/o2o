@@ -106,7 +106,7 @@ public class Product implements Serializable{
     public void setEnableStatus(Integer enableStatus) {
         this.enableStatus = enableStatus;
     }
-    
+
     public List<ProductImg> getProductImgList() {
         return productImgList;
     }
