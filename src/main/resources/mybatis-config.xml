@@ -10,7 +10,7 @@
         <setting name="useColumnLabel" value="true"/>
 
         <setting name="useGeneratedKeys" value="true"/>
-
-        <setting name="mapUnderscoreToCamelCase" value="false"/>
+        <!-- 下划线(数据库字段)自动转驼峰命名(实体类字段) -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
 </configuration>

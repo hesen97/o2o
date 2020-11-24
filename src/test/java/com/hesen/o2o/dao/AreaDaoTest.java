@@ -15,7 +15,7 @@ public class AreaDaoTest extends BasicTest {
     private AreaDao areaDao;
 
     @Test
-    public void queryArea() {
+    public void testQueryArea() {
         List<Area> areaList = areaDao.queryArea();
         assertEquals(2, areaList.size());
     }
