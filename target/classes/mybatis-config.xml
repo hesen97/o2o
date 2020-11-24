@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+    <!-- mybatis的全局配置 -->
+    <settings>
+        <!-- 允许在sql语句中为表中字段起别名，映射时将通过别名和实体类中的属性字段映射 -->
+        <setting name="useColumnLabel" value="true"/>
+
+        <setting name="useGeneratedKeys" value="true"/>
+
+        <setting name="mapUnderscoreToCamelCase" value="false"/>
+    </settings>
+</configuration>
