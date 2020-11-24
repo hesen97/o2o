@@ -6,4 +6,21 @@
 
   <display-name>Archetype Created Web Application</display-name>
 
+  <!-- 配置DispatcherServlet -->
+  <servlet>
+    <servlet-name>spring-dispatcher</servlet-name>
+    <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+    <!-- 配置springMVC需要加载的配置文件 spring-dao.xml,spring-service.xml,spring-web.xml
+        Mybatis - > spring -> springmvc -->
+    <init-param>
+      <param-name>contextConfigLocation</param-name>
+      <!-- 将三个spring配置文件整合到了一起，与以往不同的是没有配置spring监听器来启动spring容器 -->
+      <param-value>classpath:spring/spring-*.xml</param-value>
+    </init-param>
+  </servlet>
+  <servlet-mapping>
+    <servlet-name>spring-dispatcher</servlet-name>
+    <!-- 默认匹配所有的请求 -->
+    <url-pattern>/</url-pattern>
+  </servlet-mapping>
 </web-app>
