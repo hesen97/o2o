@@ -2,6 +2,8 @@ package com.hesen.o2o.web.superadmin;
 
 import com.hesen.o2o.entity.Area;
 import com.hesen.o2o.service.AreaService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,13 +17,16 @@ import java.util.Map;
 @RequestMapping("/superadmin")
 @Controller
 public class AreaController {
-
     @Autowired
     private AreaService areaService;
+
+    Logger logger = LoggerFactory.getLogger(AreaController.class);
 
     @ResponseBody
     @RequestMapping(value = "/areas", method = RequestMethod.GET)
     public Map<String, Object> getAreaList() {
+        logger.info("===start===");
+        Long startTime = System.currentTimeMillis();
         //这里是不是可以使用Spring自带的ModelMap，或者Modal，为啥要自己写？？
         Map<String, Object> modelMap = new HashMap<>();
         List<Area> areaList = null;
@@ -37,6 +42,10 @@ public class AreaController {
             modelMap.put("errorMsg", e.getMessage());
             e.printStackTrace();
         }
+        logger.error("test error");
+        Long endTime = System.currentTimeMillis();
+        logger.info("spendTime[{}]", startTime - endTime);
+        logger.info("===end===");
         return modelMap;
     }
 
