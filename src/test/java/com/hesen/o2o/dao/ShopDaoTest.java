@@ -8,6 +8,8 @@ import com.hesen.o2o.entity.ShopCategory;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Date;
+
 import static org.junit.Assert.assertEquals;
 
 public class ShopDaoTest extends BasicTest {
@@ -33,6 +35,18 @@ public class ShopDaoTest extends BasicTest {
         shop.setEnableStatus(1);
 
         int effectNum = shopDao.insertShop(shop);
-        assertEquals(1, effectNum);
+        System.out.println(shop.getShopId());
+    }
+
+    @Test
+    public void testUpdateShop() {
+        Shop shop = new Shop();
+        shop.setShopId(2L);
+        shop.setShopName("测试更新");
+        shop.setShopDesc("测试更新");
+        shop.setLastEditTime(new Date());
+
+        int effectTime = shopDao.updateShop(shop);
+        assertEquals(1, effectTime);
     }
 }
