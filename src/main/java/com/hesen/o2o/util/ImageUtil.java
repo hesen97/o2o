@@ -22,10 +22,10 @@ public class ImageUtil {
      * @return
      */
     public static String generateThumbnail(CommonsMultipartFile thumbnail, String targetAddr) {
-        String saveFilename = getRandomFilename();
+        String realFilename = getRandomFilename();
         String extension = getFileExtension(thumbnail);
         makeDirs(targetAddr);
-        String relativeDir = targetAddr + saveFilename + extension;
+        String relativeDir = targetAddr + realFilename + extension;
         File dest = new File(PathUtil.getImgBasePath() + relativeDir);
         try {
             Thumbnails.of(thumbnail.getInputStream()).size(200, 200)

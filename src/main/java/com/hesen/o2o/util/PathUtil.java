@@ -1,8 +1,10 @@
 package com.hesen.o2o.util;
 
+import java.util.regex.Matcher;
+
 public class PathUtil {
     //获取系统的文件分隔符
-    private static String seperator = System.getProperty("file.seperator");
+    private static String separator = System.getProperty("file.separator");
 
     public static String getImgBasePath() {
         String os = System.getProperty("os.name").toLowerCase();
@@ -12,11 +14,11 @@ public class PathUtil {
         } else {
             basePath = "/home/hesen/image/";
         }
-        return basePath.replaceAll("/", seperator);
+        return basePath.replaceAll("/", Matcher.quoteReplacement(separator));
     }
 
     public static String getShopImgPath(long shopId) {
         String shopImgPath = "/upload/item/shop/" + shopId + "/";
-        return shopImgPath.replaceAll("/", seperator);
+        return shopImgPath.replaceAll("/", Matcher.quoteReplacement(separator));
     }
 }

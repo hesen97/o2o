@@ -1,6 +1,6 @@
 package com.hesen.o2o.dao;
 
-import com.hesen.o2o.BasicTest;
+import com.hesen.o2o.BaseTest;
 import com.hesen.o2o.entity.Area;
 import com.hesen.o2o.entity.PersonInfo;
 import com.hesen.o2o.entity.Shop;
@@ -12,7 +12,7 @@ import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
 
-public class ShopDaoTest extends BasicTest {
+public class ShopDaoTest extends BaseTest {
     @Autowired
     private ShopDao shopDao;
 
