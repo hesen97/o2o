@@ -8,5 +8,5 @@ import java.io.File;
 
 public interface ShopService {
 
-    ShopExecution addShop(Shop shop, CommonsMultipartFile shopImg);
+    ShopExecution addShop(Shop shop, File shopImg);
 }

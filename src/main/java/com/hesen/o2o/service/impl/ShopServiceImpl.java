@@ -4,6 +4,7 @@ import com.hesen.o2o.dao.ShopDao;
 import com.hesen.o2o.dto.ShopExecution;
 import com.hesen.o2o.entity.Shop;
 import com.hesen.o2o.enums.ShopStateEnum;
+import com.hesen.o2o.exception.ShopOperationException;
 import com.hesen.o2o.service.ShopService;
 import com.hesen.o2o.util.ImageUtil;
 import com.hesen.o2o.util.PathUtil;
@@ -29,7 +30,7 @@ public class ShopServiceImpl implements ShopService {
      */
     @Override
     @Transactional()
-    public ShopExecution addShop(Shop shop, CommonsMultipartFile shopImg) {
+    public ShopExecution addShop(Shop shop, File shopImg) {
         //判断非空
         if (shop == null) {
             return new ShopExecution(ShopStateEnum.NULL_SHOP_INFO);
@@ -42,14 +43,14 @@ public class ShopServiceImpl implements ShopService {
             shop.setLastEditTime(shop.getCreateTime());
             int effectNum = shopDao.insertShop(shop);
             if (effectNum <= 0) {
-                throw new RuntimeException("新增商铺失败");
+                throw new ShopOperationException("新增商铺失败");
             } else {
                 //存储图片
                 if (shopImg != null) {
                     try {
                         addShopImg(shop, shopImg);
                     } catch (Exception e) {
-                        throw new RuntimeException("add ShopImg error: " + e.getMessage());
+                        throw new ShopOperationException("add ShopImg error: " + e.getMessage());
                     }
                 }
 
@@ -57,17 +58,17 @@ public class ShopServiceImpl implements ShopService {
                 //更新数据库中shop的信息
                 effectNum = shopDao.updateShop(shop);
                 if (effectNum <= 0) {
-                    throw new RuntimeException("更新图片地址失败");
+                    throw new ShopOperationException("更新图片地址失败");
                 }
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new ShopOperationException("addShop error: " + e.getMessage());
         }
         return new ShopExecution(ShopStateEnum.CHECK, shop);
     }
 
 
-    private void addShopImg(Shop shop, CommonsMultipartFile shopImg) {
+    private void addShopImg(Shop shop, File shopImg) {
         String relativeAddr = PathUtil.getShopImgPath(shop.getShopId());
         //generateThumbnail最终返回的是商店图片的相对目录加上图片名字
         String shopImgAddr = ImageUtil.generateThumbnail(shopImg, relativeAddr);

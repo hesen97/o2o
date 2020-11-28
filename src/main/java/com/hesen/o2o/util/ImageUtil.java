@@ -21,14 +21,14 @@ public class ImageUtil {
      * @param targetAddr
      * @return
      */
-    public static String generateThumbnail(CommonsMultipartFile thumbnail, String targetAddr) {
+    public static String generateThumbnail(File thumbnail, String targetAddr) {
         String realFilename = getRandomFilename();
         String extension = getFileExtension(thumbnail);
         makeDirs(targetAddr);
         String relativeDir = targetAddr + realFilename + extension;
         File dest = new File(PathUtil.getImgBasePath() + relativeDir);
         try {
-            Thumbnails.of(thumbnail.getInputStream()).size(200, 200)
+            Thumbnails.of(thumbnail).size(200, 200)
                     .outputQuality(0.8f).toFile(dest);
         } catch (IOException e) {
             e.printStackTrace();
@@ -43,8 +43,8 @@ public class ImageUtil {
          }
     }
 
-    public static String getFileExtension(CommonsMultipartFile cFile) {
-        String originalFilename = cFile.getOriginalFilename();
+    public static String getFileExtension(File cFile) {
+        String originalFilename = cFile.getName();
         return originalFilename.substring(originalFilename.indexOf("."));
     }
 
