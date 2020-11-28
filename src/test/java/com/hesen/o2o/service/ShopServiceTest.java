@@ -13,9 +13,9 @@ public class ShopServiceTest extends BaseTest {
     private ShopService shopService;
 
     @Test
-    public void testAddShop() {
+    public void testAddShop() throws Exception {
         Shop shop = new Shop();
-        shop.setShopName("何森炸鸡店");
+        shop.setShopName("何森奶茶店");
 
         File shopImg = new File("F:\\images\\shop1.jpg");
         shopService.addShop(shop, shopImg);
