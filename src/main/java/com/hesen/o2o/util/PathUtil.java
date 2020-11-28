@@ -1,6 +1,6 @@
 package com.hesen.o2o.util;
 
-public class PathUtils {
+public class PathUtil {
     //获取系统的文件分隔符
     private static String seperator = System.getProperty("file.seperator");
 

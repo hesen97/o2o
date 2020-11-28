@@ -2,17 +2,15 @@ package com.hesen.o2o.util;
 
 import net.coobird.thumbnailator.Thumbnails;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import java.io.File;
 import java.io.IOException;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
 
 
-public class ImageUtils {
+public class ImageUtil {
 
     private static final SimpleDateFormat sDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
     private static final Random random = new Random();
@@ -28,7 +26,7 @@ public class ImageUtils {
         String extension = getFileExtension(thumbnail);
         makeDirs(targetAddr);
         String relativeDir = targetAddr + saveFilename + extension;
-        File dest = new File(PathUtils.getImgBasePath() + relativeDir);
+        File dest = new File(PathUtil.getImgBasePath() + relativeDir);
         try {
             Thumbnails.of(thumbnail.getInputStream()).size(200, 200)
                     .outputQuality(0.8f).toFile(dest);
@@ -39,7 +37,7 @@ public class ImageUtils {
     }
 
     public static void makeDirs(String targetAddr) {
-         File realAddr = new File(PathUtils.getImgBasePath() + targetAddr);
+         File realAddr = new File(PathUtil.getImgBasePath() + targetAddr);
          if (!realAddr.exists()) {
              realAddr.mkdirs();
          }
