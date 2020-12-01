@@ -6,13 +6,14 @@ $(function() {
 
     // var shopInfoUrl = '/myo2o/shop/getshopbyid?shopId=1';
     // var shopInfoUrl = '/myo2o/shop/getshopbyid?shopId=' + shopId;
-    var initUrl = '/myo2o/shop/getshopinitinfo';
-
+    var initUrl = '/o2o/shopadmin/getshopinitinfo';
     alert(initUrl);
-    var editShopUrl = '/myo2o/shop/registershop';
+    var editShopUrl = '/o2o/shopadmin/registershop';
     // if (isEdit) {
     //     editShopUrl = '/myo2o/shop/modifyshop';
     // }
+
+    getCategory();
 
     function getInfo(shopId) {
         $.getJSON(shopInfoUrl, function(data) {
@@ -38,25 +39,25 @@ $(function() {
         });
     }
 
-    // function getCategory() {
-    //     $.getJSON(initUrl, function(data) {
-    //         if (data.success) {
-    //             var tempHtml = '';
-    //             var tempAreaHtml = '';
-    //             data.shopCategoryList.map(function(item, index) {
-    //                 tempHtml += '<option data-id="' + item.shopCategoryId
-    //                     + '">' + item.shopCategoryName + '</option>';
-    //             });
-    //             data.areaList.map(function(item, index) {
-    //                 tempAreaHtml += '<option data-id="' + item.areaId + '">'
-    //                     + item.areaName + '</option>';
-    //             });
-    //             $('#shop-category').html(tempHtml);
-    //             $('#shop-category').removeAttr('disabled');
-    //             $('#area').html(tempAreaHtml);
-    //         }
-    //     });
-    // }
+    function getCategory() {
+        $.getJSON(initUrl, function(data) {
+            if (data.success) {
+                var tempHtml = '';
+                var tempAreaHtml = '';
+                data.shopCategoryList.map(function(item, index) {
+                    tempHtml += '<option data-id="' + item.shopCategoryId
+                        + '">' + item.shopCategoryName + '</option>';
+                });
+                data.areaList.map(function(item, index) {
+                    tempAreaHtml += '<option data-id="' + item.areaId + '">'
+                        + item.areaName + '</option>';
+                });
+                $('#shop-category').html(tempHtml);
+                $('#shop-category').removeAttr('disabled');
+                $('#area').html(tempAreaHtml);
+            }
+        });
+    }
 
     // if (isEdit) {
     //     getInfo(shopId);

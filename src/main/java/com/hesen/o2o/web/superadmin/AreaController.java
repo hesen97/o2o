@@ -23,12 +23,10 @@ public class AreaController {
     @RequestMapping(value = "/areas", method = RequestMethod.GET)
     public Map<String, Object> getAreaList() {
         Long startTime = System.currentTimeMillis();
-        //这里是不是可以使用Spring自带的ModelMap，或者Modal，为啥要自己写？？
         Map<String, Object> modelMap = new HashMap<>();
         List<Area> areaList = null;
 
         try {
-            //为啥要放到try catch中，根本就没啥异常啊？？
             areaList = areaService.getAreaList();
             modelMap.put("success", true);
             modelMap.put("rows", areaList);

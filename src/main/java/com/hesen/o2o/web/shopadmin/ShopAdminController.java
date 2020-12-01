@@ -12,4 +12,6 @@ public class ShopAdminController {
     public String shopOperation() {
         return "shop/shopoperation";
     }
+
+
 }
