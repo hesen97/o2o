@@ -51,8 +51,8 @@ public class ShopManageController {
 
    @RequestMapping(value = "/registershop", method = RequestMethod.POST)
    @ResponseBody
-   public Map<String, Object> registerShop(@RequestBody String shop,
-//                                           @RequestParam("shopImg")CommonsMultipartFile shopImg,
+   public Map<String, Object> registerShop(Shop shop,
+                                           @RequestParam("shopImage") CommonsMultipartFile shopImage,
                                            HttpServletRequest request) {
         Map<String, Object> modalMap = new HashMap<>();
         if (!CaptchaUtil.checkCaptcha(request)) {
@@ -61,22 +61,22 @@ public class ShopManageController {
             return modalMap;
         }
 
-//        if (shop != null && shopImg != null) {
-//            PersonInfo owner = new PersonInfo();
-//            owner.setUserId(1L);
-//            shop.setOwner(owner);
-//            try{
-//                shopService.addShop(shop, shopImg.getInputStream(), shopImg.getOriginalFilename());
-//            } catch (Exception e) {
-//                modalMap.put("success", false);
-//                modalMap.put("errorMsg", "添加商店失败");
-//                e.printStackTrace();
-//            }
-//        } else {
-//            modalMap.put("success", false);
-//            modalMap.put("errorMsg", "请输入商铺信息");
-//            return modalMap;
-//        }
+        if (shop != null && shopImage != null) {
+            PersonInfo owner = new PersonInfo();
+            owner.setUserId(1L);
+
+            try{
+                shopService.addShop(shop, shopImage.getInputStream(), shopImage.getOriginalFilename());
+            } catch (Exception e) {
+                modalMap.put("success", false);
+                modalMap.put("errorMsg", "添加商店失败");
+                e.printStackTrace();
+            }
+        } else {
+            modalMap.put("success", false);
+            modalMap.put("errorMsg", "请输入商铺信息");
+            return modalMap;
+        }
 
         modalMap.put("success", true);
         return modalMap;

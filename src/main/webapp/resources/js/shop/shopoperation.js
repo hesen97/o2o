@@ -7,7 +7,6 @@ $(function() {
     // var shopInfoUrl = '/myo2o/shop/getshopbyid?shopId=1';
     // var shopInfoUrl = '/myo2o/shop/getshopbyid?shopId=' + shopId;
     var initUrl = '/o2o/shopadmin/getshopinitinfo';
-    alert(initUrl);
     var editShopUrl = '/o2o/shopadmin/registershop';
     // if (isEdit) {
     //     editShopUrl = '/myo2o/shop/modifyshop';
@@ -86,8 +85,14 @@ $(function() {
 
         var shopImg = $("#shop-img")[0].files[0];
         var formData = new FormData();
-        formData.append('shopImg', shopImg);
-        formData.append('shopStr', JSON.stringify(shop));
+        formData.append("shopImage", shopImg);
+        formData.append("shopName", shop.shopName);
+        formData.append("shopAddr", shop.shopAddr);
+        formData.append("phone", shop.phone);
+        formData.append("shopDesc", shop.shopDesc);
+        formData.append("shopCategory.shopCategoryId", shop.shopCategory.shopCategoryId);
+        formData.append("area.areaId", shop.area.areaId);
+
         var verifyCodeActual = $('#j_captcha').val();
         if (!verifyCodeActual) {
             $.toast('请输入验证码！');
@@ -104,14 +109,14 @@ $(function() {
             cache : false,
             success : function(data) {
                 if (data.success) {
-                    $.toast('提交成功！');
+                    alert("添加成功");
                     if (isEdit){
                         $('#captcha_img').click();
                     } else{
                         window.location.href="/shop/shoplist";
                     }
                 } else {
-                    $.toast('提交失败！');
+                    alert(data.errorMsg);
                     $('#captcha_img').click();
                 }
             }
