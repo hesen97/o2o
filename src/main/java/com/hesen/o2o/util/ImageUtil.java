@@ -5,6 +5,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Random;
@@ -21,9 +22,9 @@ public class ImageUtil {
      * @param targetAddr
      * @return
      */
-    public static String generateThumbnail(File thumbnail, String targetAddr) {
+    public static String generateThumbnail(InputStream thumbnail, String fileName, String targetAddr) {
         String realFilename = getRandomFilename();
-        String extension = getFileExtension(thumbnail);
+        String extension = getFileExtension(fileName);
         makeDirs(targetAddr);
         String relativeDir = targetAddr + realFilename + extension;
         File dest = new File(PathUtil.getImgBasePath() + relativeDir);
@@ -43,9 +44,8 @@ public class ImageUtil {
          }
     }
 
-    public static String getFileExtension(File cFile) {
-        String originalFilename = cFile.getName();
-        return originalFilename.substring(originalFilename.indexOf("."));
+    public static String getFileExtension(String fileName) {
+        return fileName.substring(fileName.indexOf("."));
     }
 
     public static String getRandomFilename() {

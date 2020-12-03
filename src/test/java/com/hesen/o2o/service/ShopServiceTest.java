@@ -6,6 +6,8 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 
 public class ShopServiceTest extends BaseTest {
 
@@ -15,9 +17,10 @@ public class ShopServiceTest extends BaseTest {
     @Test
     public void testAddShop() throws Exception {
         Shop shop = new Shop();
-        shop.setShopName("何森奶茶店");
+        shop.setShopName("测试service层File改为InputStream");
 
         File shopImg = new File("F:\\images\\shop1.jpg");
-        shopService.addShop(shop, shopImg);
+        InputStream shopImgInputStrream = new FileInputStream(shopImg);
+        shopService.addShop(shop, shopImgInputStrream, shopImg.getName());
     }
 }
