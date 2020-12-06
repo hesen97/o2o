@@ -49,4 +49,11 @@ public class ShopDaoTest extends BaseTest {
         int effectTime = shopDao.updateShop(shop);
         assertEquals(1, effectTime);
     }
+
+    @Test
+    public void testSelectShopByShopId() {
+        long shopId = 4L;
+        Shop shop = shopDao.selectShopByShopId(shopId);
+        System.out.println(shop);
+    }
 }

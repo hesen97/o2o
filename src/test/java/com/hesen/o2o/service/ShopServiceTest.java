@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 
 public class ShopServiceTest extends BaseTest {
@@ -22,5 +23,17 @@ public class ShopServiceTest extends BaseTest {
         File shopImg = new File("F:\\images\\shop1.jpg");
         InputStream shopImgInputStrream = new FileInputStream(shopImg);
         shopService.addShop(shop, shopImgInputStrream, shopImg.getName());
+    }
+
+    @Test
+    public void testModifyShop() throws FileNotFoundException {
+        Shop shop = new Shop();
+        shop.setShopId(4L);
+        shop.setShopName("testModifyShop");
+
+        File file = new File("F:\\images\\shop3.jpg");
+        InputStream is = new FileInputStream(file);
+        String fileName = file.getName();
+        shopService.modifyShop(shop, is, fileName);
     }
 }

@@ -37,6 +37,20 @@ public class ImageUtil {
         return relativeDir;
     }
 
+    public static void deleteFileOrPath(String path) {
+        File absolutePath = new File(PathUtil.getImgBasePath() + path);
+        if (absolutePath.exists()) {
+            if (absolutePath.isDirectory()) {
+                File[] files = absolutePath.listFiles();
+                for (File file : files) {
+                    file.delete();
+                }
+            }
+            //delete用于删除文件或目录，如果删除目录，该目录必须是空目录
+            absolutePath.delete();
+        }
+    }
+
     public static void makeDirs(String targetAddr) {
          File realAddr = new File(PathUtil.getImgBasePath() + targetAddr);
          if (!realAddr.exists()) {

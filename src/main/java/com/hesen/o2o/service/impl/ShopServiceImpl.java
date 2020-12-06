@@ -24,9 +24,10 @@ public class ShopServiceImpl implements ShopService {
     private ShopDao shopDao;
 
     /**
-     * 这个方法需要之后好好再看，结合前端
+     * 这个方法要再看看
      * @param shop
-     * @param shopImg
+     * @param shopImageInputStream
+     * @param fileName
      * @return
      */
     @Override
@@ -66,6 +67,34 @@ public class ShopServiceImpl implements ShopService {
             throw new ShopOperationException("addShop error: " + e.getMessage());
         }
         return new ShopExecution(ShopStateEnum.CHECK, shop);
+    }
+
+    @Override
+    public Shop queryShopByShopId(long shopId) {
+        return shopDao.selectShopByShopId(shopId);
+    }
+
+    @Override
+    public ShopExecution modifyShop(Shop shop, InputStream shopImgInputStream, String fileName) {
+        if (shop == null || shop.getShopId() == null) {
+            return new ShopExecution(ShopStateEnum.NULL_SHOP_INFO);
+        } else {
+            try {
+                //说明需要更换图片
+                if (shopImgInputStream != null && fileName != null) {
+                    Shop oldShop = shopDao.selectShopByShopId(shop.getShopId());
+                    if (oldShop.getShopImg() != null) {
+                        ImageUtil.deleteFileOrPath(oldShop.getShopImg());
+                    }
+                    addShopImg(shop, shopImgInputStream, fileName);
+                }
+                shop.setLastEditTime(new Date());
+                shopDao.updateShop(shop);
+                return new ShopExecution(ShopStateEnum.SUCCESS, shop);
+            } catch (Exception e) {
+                throw new ShopOperationException("修改商店失败:" + e.getMessage());
+            }
+        }
     }
 
 
