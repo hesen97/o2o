@@ -29,9 +29,9 @@ public class ShopServiceTest extends BaseTest {
     public void testModifyShop() throws FileNotFoundException {
         Shop shop = new Shop();
         shop.setShopId(4L);
-        shop.setShopName("testModifyShop");
+        shop.setShopName("service层测试修改店铺");
 
-        File file = new File("F:\\images\\shop3.jpg");
+        File file = new File("F:\\images\\shop2.jpg");
         InputStream is = new FileInputStream(file);
         String fileName = file.getName();
         shopService.modifyShop(shop, is, fileName);

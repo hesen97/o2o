@@ -10,6 +10,15 @@ public class ShopExecution {
     private Integer stateCode;
     //结果解释信息
     private String stateInfo;
+
+    public Integer getStateCode() {
+        return stateCode;
+    }
+
+    public String getStateInfo() {
+        return stateInfo;
+    }
+
     //店铺数量
     private Integer count;
     //操作的店铺(增删改店铺的时候使用)
@@ -34,4 +43,5 @@ public class ShopExecution {
         this(shopStateEnum);
         this.shopList = shopList;
     }
+
 }

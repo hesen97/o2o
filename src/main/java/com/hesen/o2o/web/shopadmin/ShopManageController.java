@@ -1,9 +1,11 @@
 package com.hesen.o2o.web.shopadmin;
 
+import com.hesen.o2o.dto.ShopExecution;
 import com.hesen.o2o.entity.Area;
 import com.hesen.o2o.entity.PersonInfo;
 import com.hesen.o2o.entity.Shop;
 import com.hesen.o2o.entity.ShopCategory;
+import com.hesen.o2o.enums.ShopStateEnum;
 import com.hesen.o2o.service.AreaService;
 import com.hesen.o2o.service.ShopCategoryService;
 import com.hesen.o2o.service.ShopService;
@@ -17,6 +19,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,26 +50,31 @@ public class ShopManageController {
             modalMap.put("errorMsg", e.getMessage());
         }
         return modalMap;
-   }
+    }
 
-   @RequestMapping(value = "/registershop", method = RequestMethod.POST)
-   @ResponseBody
-   public Map<String, Object> registerShop(Shop shop,
+    @RequestMapping(value = "/registershop", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> registerShop(Shop shop,
                                            @RequestParam("shopImage") CommonsMultipartFile shopImage,
                                            HttpServletRequest request) {
         Map<String, Object> modalMap = new HashMap<>();
-        if (!CaptchaUtil.checkCaptcha(request)) {
-            modalMap.put("success", false);
-            modalMap.put("errorMsg", "验证码输入有误");
-            return modalMap;
-        }
+//        if (!CaptchaUtil.checkCaptcha(request)) {
+//            modalMap.put("success", false);
+//            modalMap.put("errorMsg", "验证码输入有误");
+//            return modalMap;
+//        }
 
         if (shop != null && shopImage != null) {
-            PersonInfo owner = new PersonInfo();
-            owner.setUserId(1L);
-
+//            PersonInfo owner = (PersonInfo) request.getSession().getAttribute("user");
+//            shop.setOwner(owner);
             try{
                 shopService.addShop(shop, shopImage.getInputStream(), shopImage.getOriginalFilename());
+                List<Shop> shopList = (List<Shop>) request.getSession().getAttribute("shopList");
+                if (shopList == null) {
+                    shopList = new ArrayList<>();
+                }
+                shopList.add(shop);
+                request.getSession().setAttribute("shopList", shopList);
             } catch (Exception e) {
                 modalMap.put("success", false);
                 modalMap.put("errorMsg", "添加商店失败");
@@ -80,7 +88,56 @@ public class ShopManageController {
 
         modalMap.put("success", true);
         return modalMap;
-   }
+    }
+
+    @RequestMapping(value = "/getshopbyid", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getShopById(@RequestParam("shopId") long shopId) {
+        Map<String, Object> map = new HashMap<>();
+        try {
+            Shop shop = shopService.queryShopByShopId(shopId);
+            List<Area> areaList = areaService.getAreaList();
+            map.put("shop", shop);
+            map.put("areaList", areaList);
+            map.put("success", true);
+        } catch (Exception e) {
+            map.put("success", false);
+            map.put("errorMsg", e.getMessage());
+        }
+        return map;
+    }
+
+
+    @RequestMapping(value = "/modifyshop", method = RequestMethod.POST)
+    @ResponseBody
+    public Map<String, Object> modifyShop(Shop shop,
+                                      @RequestParam("shopImage") CommonsMultipartFile shopImage) {
+        Map<String, Object> map = new HashMap<>();
+        if (shop != null && shop.getShopId() != null) {
+            try {
+                ShopExecution se = null;
+                if (shopImage == null) {
+                    se = shopService.modifyShop(shop, null, null);
+                } else {
+                    se = shopService.modifyShop(shop, shopImage.getInputStream(), shopImage.getOriginalFilename());
+                }
+
+                if (se.getStateCode() == ShopStateEnum.SUCCESS.getStateCode()) {
+                    map.put("success", true);
+                } else {
+                    map.put("success", false);
+                    map.put("errorMsg", se.getStateInfo());
+                }
+            } catch (Exception e) {
+                map.put("success", false);
+                map.put("errorMsg", e.getMessage());
+            }
+        } else {
+            map.put("success", false);
+            map.put("errorMsg", "商铺信息不全");
+        }
+        return map;
+    }
 
 
 //    //将输入流转换为File类
