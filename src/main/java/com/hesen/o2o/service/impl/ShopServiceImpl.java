@@ -16,6 +16,9 @@ import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import java.io.File;
 import java.io.InputStream;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service
 public class ShopServiceImpl implements ShopService {
@@ -95,6 +98,39 @@ public class ShopServiceImpl implements ShopService {
                 throw new ShopOperationException("修改商店失败:" + e.getMessage());
             }
         }
+    }
+
+    @Override
+    public ShopExecution getShopList(Shop condition, int pageIndex, int pageSize) {
+        int rowIndex = pageIndex > 0 ? (pageIndex - 1) * pageSize : 0;
+        Map<String, Object> criterion = new HashMap<>();
+        criterion.put("shopName", condition.getShopName());
+        criterion.put("shopStatus", condition.getEnableStatus());
+        criterion.put("shopCategoryId", condition.getShopCategoryId());
+
+        if (condition.getArea() != null) {
+            criterion.put("shopAreaId", condition.getArea().getAreaId());
+        }
+
+        if (condition.getOwner() != null) {
+            criterion.put("shopOwnerId", condition.getOwner().getUserId());
+        }
+
+        ShopExecution se = null;
+        try {
+            int count = shopDao.countShopWithCriterion(criterion);
+
+            criterion.put("rowIndex", rowIndex);
+            criterion.put("pageSize", pageSize);
+            List<Shop> shopList = shopDao.selectShopWithCriterion(criterion);
+            se = new ShopExecution(ShopStateEnum.SUCCESS);
+            se.setShopList(shopList);
+            se.setCount(count);
+        } catch (Exception e) {
+            se = new ShopExecution(ShopStateEnum.INNER_ERROR);
+            e.printStackTrace();
+        }
+        return se;
     }
 
 

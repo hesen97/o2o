@@ -29,6 +29,72 @@
         </association>
     </resultMap>
 
+    <select id="selectShopWithCriterion" resultMap="shopMap">
+        select
+        s.shop_id,
+        s.shop_name,
+        s.shop_desc,
+        s.shop_addr,
+        s.phone,
+        s.shop_img,
+        s.priority,
+        s.create_time,
+        s.last_edit_time,
+        s.enable_status,
+        s.advice,
+        a.area_id,
+        a.area_name,
+        sc.shop_category_id,
+        sc.shop_category_name,
+        p.user_id,
+        p.name
+        from tb_shop s, tb_shop_category sc, tb_person_info p, tb_area a
+        where s.shop_category_id = sc.shop_category_id
+        and s.owner_id = p.user_id
+        and s.area_id = a.area_id
+        <if test="shopName != null">
+            and s.shop_name = %#{shopName}%
+        </if>
+        <if test="shopStatus != null">
+            and s.enable_state = #{shopStatus}
+        </if>
+        <if test="shopCategoryId != null">
+            and s.shop_category_id = #{shopCategoryId}
+        </if>
+        <if test="shopAreaId != null">
+            and s.area_id = #{shopAreaId}
+        </if>
+        <if test="shopOwnerId != null">
+            and s.owner_id = #{shopOwnerId}
+        </if>
+        order by priority desc
+        <if test="rowIndex != null and pageSize != null">
+            limit #{rowIndex}, #{pageSize}
+        </if>
+    </select>
+
+    <select id="countShopWithCriterion" resultType="int">
+        select count(*)
+        from tb_shop s, tb_shop_category sc, tb_person_info p, tb_area a
+        where s.shop_category_id = sc.shop_category_id
+        and s.owner_id = p.user_id
+        and s.area_id = a.area_id
+        <if test="shopName != null">
+            and s.shop_name = %#{shopName}%
+        </if>
+        <if test="shopStatus != null">
+            and s.enable_state = #{shopStatus}
+        </if>
+        <if test="shopCategoryId != null">
+            and s.shop_category_id = #{shopCategoryId}
+        </if>
+        <if test="shopAreaId != null">
+            and s.area_id = #{shopAreaId}
+        </if>
+        <if test="shopOwnerId != null">
+            and s.owner_id = #{shopOwnerId}
+        </if>
+    </select>
 
     <insert id="insertShop" useGeneratedKeys="true" keyProperty="shopId" keyColumn="shop_id">
         insert into tb_shop(owner_id, area_id, shop_category_id, shop_name, shop_desc,

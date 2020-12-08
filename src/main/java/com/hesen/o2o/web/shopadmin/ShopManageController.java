@@ -139,6 +139,59 @@ public class ShopManageController {
         return map;
     }
 
+    @RequestMapping(value = "/getshopmanagementinfo", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getShopManagementInfo(Long shopId, HttpServletRequest request) {
+        Map<String, Object> modalMap = new HashMap<>();
+        if (shopId == null) {
+            Shop currentShop = (Shop) request.getSession().getAttribute("currentShop");
+            if (currentShop == null) {
+                modalMap.put("redirect", true);
+                modalMap.put("url", "/o2o/shopadmin/shoplist");
+            } else {
+                modalMap.put("redirect", false);
+                modalMap.put("shopId", currentShop.getShopId());
+            }
+        } else {
+            modalMap.put("redirect", false);
+            modalMap.put("shopId", shopId);
+        }
+        return modalMap;
+    }
+
+    //获取当前登陆用户所属的商铺
+    @RequestMapping(value = "/getshoplist", method = RequestMethod.GET)
+    @ResponseBody
+    public Map<String, Object> getShopList(HttpServletRequest request) {
+        Map<String, Object> modalMap = new HashMap<>();
+
+        PersonInfo user = new PersonInfo();
+        user.setUserId(1L);
+        user.setName("hesen");
+        request.getSession().setAttribute("owner", user);
+
+        PersonInfo owner = (PersonInfo) request.getSession().getAttribute("owner");
+        Shop condition = new Shop();
+        condition.setOwner(owner);
+
+        try {
+            //0 , 100的含义实际上是获取该用户的所有商铺
+            ShopExecution se = shopService.getShopList(condition, 0, 100);
+            if (se.getStateCode() == ShopStateEnum.SUCCESS.getStateCode()) {
+                modalMap.put("shopList", se.getShopList());
+                modalMap.put("count", se.getCount());
+                modalMap.put("success", true);
+            } else {
+                modalMap.put("errorMsg", se.getStateInfo());
+                modalMap.put("success", false);
+            }
+        } catch (Exception e) {
+            modalMap.put("errorMsg", e.getMessage());
+            modalMap.put("success", false);
+        }
+        return modalMap;
+    }
+
 
 //    //将输入流转换为File类
 //    private void inputStreamToFile(InputStream in, File file) {

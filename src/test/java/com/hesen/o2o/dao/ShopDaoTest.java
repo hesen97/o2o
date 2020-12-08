@@ -9,6 +9,9 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.assertEquals;
 
@@ -55,5 +58,20 @@ public class ShopDaoTest extends BaseTest {
         long shopId = 4L;
         Shop shop = shopDao.selectShopByShopId(shopId);
         System.out.println(shop);
+    }
+
+    @Test
+    public void testSelectShopWithCriterion() {
+        Map<String, Object> criterion = new HashMap<>();
+        criterion.put("shopOwnerId", 1L);
+
+        int count = shopDao.countShopWithCriterion(criterion);
+        System.out.println("count:" + count);
+
+        criterion.put("rowIndex", 0);
+        criterion.put("pageSize", 5);
+        List<Shop> shopList = shopDao.selectShopWithCriterion(criterion);
+        System.out.println(shopList.size());
+
     }
 }

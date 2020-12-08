@@ -1,6 +1,8 @@
 package com.hesen.o2o.service;
 
 import com.hesen.o2o.BaseTest;
+import com.hesen.o2o.dto.ShopExecution;
+import com.hesen.o2o.entity.PersonInfo;
 import com.hesen.o2o.entity.Shop;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,5 +37,16 @@ public class ShopServiceTest extends BaseTest {
         InputStream is = new FileInputStream(file);
         String fileName = file.getName();
         shopService.modifyShop(shop, is, fileName);
+    }
+
+    @Test
+    public void testGetShopList() {
+        Shop condition = new Shop();
+        PersonInfo owner = new PersonInfo();
+        owner.setUserId(1L);
+        condition.setOwner(owner);
+
+        ShopExecution se = shopService.getShopList(condition, 0, 5);
+        System.out.println(se);
     }
 }
